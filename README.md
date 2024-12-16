@@ -7,13 +7,11 @@ The Claive AI SDK is a Python library that enables access to Claive Confidential
 ## Features
 * Access to Claive Confidential AI models
 * Simple and intuitive API
-* Support for multiple request formats (e.g. JSON, CSV)
-* Support for multiple response formats (e.g. JSON, CSV)
 
 ## Installation
 To install the Claive AI SDK, you can use pip:
 ```bash
-pip install claive-ai-sdk
+pip install claive-sdk-python
 ```
 ## Usage
 Here's an example of how to use the Claive AI SDK:
@@ -21,14 +19,20 @@ Here's an example of how to use the Claive AI SDK:
 import claive
 
 # Create a client instance
-client = claive.ChatClient(api_key="YOUR_API_KEY")
+from claive_sdk.claive import ChatClaive
 
-# Send a request to a Claive AI model
-response = client.send_request("YOUR_MODEL_NAME", {"input": "YOUR_INPUT_DATA"})
+self.model = ChatClaive(
+      base_url=base_url,
+      model=llm_model,
+      temperature=llm_temperature,
+      api_key="YOUR_API_KEY"
+)
 
-# Print the response
+response = self.model.invoke([system_message, summary_message, human_message])
+
 print(response)
 ```
+
 ## API Documentation
 For more information on the Claive AI SDK API, please see our [API documentation](https://claive.ai/docs/api).
 
