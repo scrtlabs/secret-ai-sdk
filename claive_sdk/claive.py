@@ -21,15 +21,15 @@ from pydantic import model_validator
 from langchain_ollama.chat_models import ChatOllama
 
 # local imports
-from claive_sdk.client import ClaiveClient, ClaiveAsyncClient
-import config
+from claive_sdk._client import ClaiveClient, ClaiveAsyncClient
+import claive_sdk._config as _config
 
 # Get the log level from the environment variable
-log_level_name = os.environ.get(config.LOG_LEVEL, 'info').lower()
+log_level_name = os.environ.get(_config.LOG_LEVEL, 'info').lower()
 
 # Set the logging level
-if log_level_name in config.LOG_LEVELS:
-    logging.basicConfig(level=config.LOG_LEVELS[log_level_name])
+if log_level_name in _config.LOG_LEVELS:
+    logging.basicConfig(level=_config.LOG_LEVELS[log_level_name])
 else:
     print(f"Invalid log level: {log_level_name}. Defaulting to INFO.")
     logging.basicConfig(level=logging.INFO)
