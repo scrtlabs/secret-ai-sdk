@@ -13,7 +13,7 @@ from ollama import AsyncClient as OllamaAsyncClient, Client as OllamaClient
 
 # local imports
 import config
-from claive_ex import ClaiveAPIKeyMissingError
+from claive_sdk.claive_ex import ClaiveAPIKeyMissingError
 
 
 class ClaiveClient(OllamaClient):

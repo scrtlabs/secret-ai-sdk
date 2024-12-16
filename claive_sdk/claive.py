@@ -21,7 +21,7 @@ from pydantic import model_validator
 from langchain_ollama.chat_models import ChatOllama
 
 # local imports
-from client import ClaiveClient, ClaiveAsyncClient
+from claive_sdk.client import ClaiveClient, ClaiveAsyncClient
 import config
 
 # Get the log level from the environment variable

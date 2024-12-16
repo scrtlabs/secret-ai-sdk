@@ -4,4 +4,4 @@
 Module Claive AI SDK
 """
 
-from .claive import ChatClaive
+from .claive_sdk.claive import ChatClaive
