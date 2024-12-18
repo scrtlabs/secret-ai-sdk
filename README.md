@@ -16,19 +16,35 @@ pip install claive-sdk-python
 ## Usage
 Here's an example of how to use the Claive AI SDK:
 ```python
-import claive
+from claive_sdk.claive import ChatClaive
+from claive_sdk.registry import RegistryClaive
 
-# Create a client instance
+llm_model = 'llama3.1:70b'
+
+models = RegistryClaive.get_models()
+
+if llm_model in models:
+      urls = RegistryClaive.get_urls(model)
+      model = ChatClaive(
+            base_url=urls[0],
+            model=llm_model,
+            temperature=llm_temperature,
+            api_key="YOUR_API_KEY"
+      )
+
+response = model.invoke([system_message, summary_message, human_message])
+
+print(response)
+```
+
+If you do not need to select a specific LLM URL (let's say your agent does not need to worry about the contextual memory from previous sessions), you can make a simplified call to ChatClaive. Given the exported env var CLAIVE_AI_API_KEY='YOUR_API_KEY':
+
+```python
 from claive_sdk.claive import ChatClaive
 
-self.model = ChatClaive(
-      base_url=base_url,
-      model=llm_model,
-      temperature=llm_temperature,
-      api_key="YOUR_API_KEY"
-)
+model = ChatClaive(model='llama3.1:70b')
 
-response = self.model.invoke([system_message, summary_message, human_message])
+response = model.invoke([system_message, human_message])
 
 print(response)
 ```

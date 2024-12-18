@@ -20,3 +20,9 @@ LOG_LEVELS = {
 }
 
 API_KEY = 'CLAIVE_AI_API_KEY' # api key env var
+
+DEFAULT_LLM_MODEL='llama3.1:70b' # default LLM model that Claive AI deployes
+
+DEFAULT_LLM_URL='https://ai1.myclaive.com:21434' # default LLM URL that Claive AI deployes
+
+
