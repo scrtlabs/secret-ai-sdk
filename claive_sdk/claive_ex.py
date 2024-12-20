@@ -19,3 +19,8 @@ class ClaiveAPIKeyMissingError(ClaiveError):
     """Raised when no API key is provided."""
     def __init__(self):
         super().__init__('Missing API Key. Environment varialbe CLAIVE_AI_API_KEY must be set')
+
+class ClaiveSecretValueMissingError(ClaiveError):
+    """Raised when no key mnemonic is provided."""
+    def __init__(self, var: str):
+        super().__init__(f'Missing environment varialbe {var} must be set')

@@ -17,24 +17,36 @@ pip install claive-sdk-python
 Here's an example of how to use the Claive AI SDK:
 ```python
 from claive_sdk.claive import ChatClaive
-from claive_sdk.registry import RegistryClaive
+from claive_sdk.secret import SecretClaive
 
-llm_model = 'llama3.1:70b'
+EXAMPLE_MNEMONIC = 'your list of mnemonic words....'
 
-models = RegistryClaive.get_models()
-
-if llm_model in models:
-      urls = RegistryClaive.get_urls(model)
-      model = ChatClaive(
-            base_url=urls[0],
-            model=llm_model,
-            temperature=llm_temperature,
-            api_key="YOUR_API_KEY"
-      )
-
-response = model.invoke([system_message, summary_message, human_message])
-
-print(response)
+secret_client = SecretClaive()
+# You need to provide your private key to sign the messages sent to the smart contract
+pk_hex = secret_client.get_priv_key_from_mnemonic(mnemonic=EXAMPLE_MNEMONIC)
+# You may need to know what confidential models are currently registered with Secret
+models = secret_client.get_models(pk_hex)
+# You may provide your own logic to select a specific confidential model
+model = your_logic_to_pick_model(models)
+# For the chosen model you may obtain a list of LLM instance URLs to connect to
+urls = secret_client.get_urls(pk_hex, model=model)
+# You previosly exported the env var CLAIVE_AI_API_KEY=YOUR-API-KEY
+claive_llm = ChatClaive(
+base_url=urls[0], # in this case we choose to access the first url in the list
+model=model, # your previosly selected model
+temperature=1.
+)
+# Define your messages you want to send to the confidential LLM for processing
+messages = [
+(
+      "system",
+      "You are a helpful assistant that translates English to French. Translate the user sentence.",
+),
+("human", "I love programming."),
+]
+# Invoke the llm
+response = claive_llm.invoke(messages, stream=False)
+print(response.content)
 ```
 
 If you do not need to select a specific LLM URL (let's say your agent does not need to worry about the contextual memory from previous sessions), you can make a simplified call to ChatClaive. Given the exported env var CLAIVE_AI_API_KEY='YOUR_API_KEY':
@@ -48,6 +60,8 @@ response = model.invoke([system_message, human_message])
 
 print(response)
 ```
+
+You can reference test_claive.py and test_secret.py to see how we tested the code as it may help you in writing your own implementation.
 
 ## API Documentation
 For more information on the Claive AI SDK API, please see our [API documentation](https://claive.ai/docs/api).

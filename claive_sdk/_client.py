@@ -27,7 +27,7 @@ class ClaiveClient(OllamaClient):
     """
     def __init__(self, host: Optional[str] = None, api_key: Optional[str] = None, **kwargs) -> None:
         if api_key is None:
-            api_key = os.environ.get(_config.API_KEY)
+            api_key = os.getenv(_config.API_KEY)
 
         if not api_key:
             raise ClaiveAPIKeyMissingError()
@@ -48,7 +48,7 @@ class ClaiveAsyncClient(OllamaAsyncClient):
     """
     def __init__(self, host: Optional[str] = None, api_key: Optional[str] = None, **kwargs) -> None:
         if api_key is None:
-            api_key = os.environ.get(_config.API_KEY)
+            api_key = os.getenv(_config.API_KEY)
 
         if not api_key:
             raise ClaiveAPIKeyMissingError()
