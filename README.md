@@ -8,10 +8,19 @@ The Claive AI SDK is a Python library that enables access to Claive Confidential
 * Access to Claive Confidential AI models
 * Simple and intuitive API
 
+## Requirements
+claive-sdk has a list of dependencies as defined in requirements.txt file
+All, but secret-sdk-python, are listed in pyproject.toml file 
+
+You will need to install secret-sdk-python as shown below:
+```bash
+pip install git+https://github.com/scrtlabs/secret-sdk-python.git@main
+```
+
 ## Installation
 To install the Claive AI SDK, you can use pip:
 ```bash
-pip install claive-sdk-python
+pip install claive-sdk
 ```
 ## Usage
 Here's an example of how to use the Claive AI SDK:
