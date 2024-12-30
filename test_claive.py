@@ -10,7 +10,7 @@ from claive_sdk.claive import ChatClaive
 # pylint: disable=line-too-long
 TEST_MNEMONIC = 'grant rice replace explain federal release fix clever romance raise often wild taxi quarter soccer fiber love must tape steak together observe swap guitar'
 
-TEST_KNOWN_MODEL = 'nemotron:70b-instruct-q5_K_M' # a known confidential LLM model
+TEST_KNOWN_MODEL = 'llama3.1:70b' # a known confidential LLM model
 
 TEST_KNOWN_API_KEY = 'dGVzdEBzY3J0bGFicy5jb206Q0xBSVZFLUFJLUFQSS1LRVktMTIzNC01Njc4OTAtMDAwMAo=' # a known to work API key
 
@@ -24,10 +24,9 @@ class TestClaiveFunctions(unittest.TestCase):
             and a query can be successfully processed
         """
         secret_client = SecretClaive()
-        pk_hex = secret_client.get_priv_key_from_mnemonic(mnemonic=TEST_MNEMONIC)
-        models = secret_client.get_models(pk_hex)
+        models = secret_client.get_models()
         self.assertGreaterEqual(len(models), 1)
-        urls = secret_client.get_urls(pk_hex, model=TEST_KNOWN_MODEL)
+        urls = secret_client.get_urls(model=TEST_KNOWN_MODEL)
         self.assertGreaterEqual(len(urls), 1)
 
         claive_llm = ChatClaive(

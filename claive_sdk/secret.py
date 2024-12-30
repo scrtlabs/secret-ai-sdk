@@ -51,46 +51,33 @@ class SecretClaive:
         pk = secp256k1.PrivateKey(mk.private_key)
         return pk.serialize()
 
-
-    def get_models(self, priv_key: str) -> List[str]:
+    def get_models(self) -> List[str]:
         """
         Method get_models returns a list of models known to the worker management smart contract
-        
-        Arguments:
-        - `priv_key`:str - a base16 encoded user wallet's private key value to sign the request with
-        
+                
         Returns:
         - List[str] - a list of models known to the smart contract
         """
-        secp_prk = secp256k1.PrivateKey(bytes.fromhex(priv_key))
-        puk = secp_prk.pubkey.serialize()
-        sig = secp_prk.ecdsa_serialize_compact(secp_prk.ecdsa_sign(puk))
-        query = {"get_models": {"signature": sig.hex(), "subscriber_public_key": puk.hex()}}
+        query = {"get_models": {}}
         models = self.secret_client.wasm.contract_query(self.smart_contract, query)
         return models['models']
 
 
-    def get_urls(self, priv_key: str, model: Optional[str] = None) -> List[str]:
+    def get_urls(self, model: Optional[str] = None) -> List[str]:
         """
         Method get_urls returns a list of urls known to Secret worker management 
         smart contract that host the given model
         
         Arguments:
-        - `priv_key`:str - a base16 encoded user wallet's private key value to sign the request with
         - `model`:str - a model to use when searching for the urls that host it
 
         Returns:
         - List[str]: - a list of urls that match the model search criteria, if provided,
                     or all urls known to Secret smart contract
         """
-        secp_prk = secp256k1.PrivateKey(bytes.fromhex(priv_key))
-        puk = secp_prk.pubkey.serialize()
-        sig = secp_prk.ecdsa_serialize_compact(secp_prk.ecdsa_sign(puk))
         if not model:
-            query = {"get_u_r_ls": {"signature": sig.hex(), \
-                                    "subscriber_public_key": puk.hex()}}
+            query = {"get_u_r_ls": {}}
         else:
-            query = {"get_u_r_ls": {"signature": sig.hex(), \
-                                    "subscriber_public_key": puk.hex(), "model": model}}
+            query = {"get_u_r_ls": {"model": model}}
         urls = self.secret_client.wasm.contract_query(self.smart_contract, query)
         return urls['urls']

@@ -31,8 +31,7 @@ class TestSecretClaiveFunctions(unittest.TestCase):
             confidential LLM models
         """
         secret_client = SecretClaive()
-        pk_hex = secret_client.get_priv_key_from_mnemonic(mnemonic=TEST_MNEMONIC)
-        models = secret_client.get_models(pk_hex)
+        models = secret_client.get_models()
         self.assertGreaterEqual(len(models), 1)
         self.assertTrue(TEST_KNOWN_MODEL in models)
 
@@ -53,8 +52,7 @@ class TestSecretClaiveFunctions(unittest.TestCase):
             confidential LLM urls based on the given model
         """
         secret_client = SecretClaive()
-        pk_hex = secret_client.get_priv_key_from_mnemonic(mnemonic=TEST_MNEMONIC)
-        urls = secret_client.get_urls(pk_hex, model=TEST_KNOWN_MODEL)
+        urls = secret_client.get_urls(model=TEST_KNOWN_MODEL)
         self.assertGreaterEqual(len(urls), 1)
         self.assertTrue(TEST_KNOWN_URL in urls)
 
