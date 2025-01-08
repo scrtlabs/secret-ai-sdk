@@ -12,7 +12,7 @@ Version: 0.1
 """
 
 # base imports
-from typing import Self
+from typing import Self, Dict
 import logging
 import os
 
@@ -55,6 +55,10 @@ class ChatClaive(ChatOllama):
         self._async_client = ClaiveAsyncClient(host=self.base_url, **client_kwargs)
 
         return self
+
+    def get_attestation(self) -> Dict:
+        """ method returns the attestation report"""
+        return {} # Not implemented yet
 
 # Main entry point (if applicable)
 if __name__ == "__main__":

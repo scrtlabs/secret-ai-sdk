@@ -10,6 +10,11 @@ class ClaiveError(Exception):
     def __init__(self, msg: str = 'Claive SDK error'):
         super().__init__(f'Claive SDK Error: {msg}')
 
+class ClaiveNotImplementedError(ClaiveError):
+    """Raised when an unimplemented API is called."""
+    def __init__(self):
+        super().__init__('Not implemented')
+
 class ClaiveInvalidInputError(ClaiveError):
     """Raised when invalid input is provided."""
     def __init__(self):
