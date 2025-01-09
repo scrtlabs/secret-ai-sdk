@@ -20,7 +20,7 @@ pip install git+https://github.com/scrtlabs/secret-sdk-python.git@main
 ## Installation
 To install the Claive AI SDK, you can use pip:
 ```bash
-pip install claive-sdk
+pip install git+https://github.com/scrtlabs/claive-sdk.git
 ```
 ## Usage
 Here's an example of how to use the Claive AI SDK:
@@ -28,17 +28,12 @@ Here's an example of how to use the Claive AI SDK:
 from claive_sdk.claive import ChatClaive
 from claive_sdk.secret import SecretClaive
 
-EXAMPLE_MNEMONIC = 'your list of mnemonic words....'
 
 secret_client = SecretClaive()
-# You need to provide your private key to sign the messages sent to the smart contract
-pk_hex = secret_client.get_priv_key_from_mnemonic(mnemonic=EXAMPLE_MNEMONIC)
-# You may need to know what confidential models are currently registered with Secret
-models = secret_client.get_models(pk_hex)
-# You may provide your own logic to select a specific confidential model
-model = your_logic_to_pick_model(models)
+# Get all the models registered with the smart contracts
+models = secret_client.get_models()
 # For the chosen model you may obtain a list of LLM instance URLs to connect to
-urls = secret_client.get_urls(pk_hex, model=model)
+urls = secret_client.get_urls(model=models[0])
 # You previosly exported the env var CLAIVE_AI_API_KEY=YOUR-API-KEY
 claive_llm = ChatClaive(
 base_url=urls[0], # in this case we choose to access the first url in the list

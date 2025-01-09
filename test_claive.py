@@ -34,6 +34,8 @@ class TestClaiveFunctions(unittest.TestCase):
             model=TEST_KNOWN_MODEL,
             temperature=1.
         )
+        attestation = claive_llm.get_attestation()
+        self.assertIsNotNone(attestation)
         messages = [
             (
                 "system",
