@@ -23,7 +23,7 @@ API_KEY = 'SECRET_AI_API_KEY' # api key env var
 
 DEFAULT_LLM_MODEL='llama3.1:70b' # default LLM model that Secret AI deployes
 
-DEFAULT_LLM_URL='https://ai1.myclaive.com:21434' # default LLM URL that Secret AI deployes
+DEFAULT_LLM_URL='https://72.10.166.66:21434' # default LLM URL that Secret AI deployes
 
 # SECRET
 SECRET_CHAIN_ID_DEFAULT = 'pulsar-3'

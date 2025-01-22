@@ -4,13 +4,13 @@ secret test module
 """
 
 import unittest
-from secret_ai_sdk.secret import SecretWorker
+from secret_ai_sdk.secret import Secret
 
 # pylint: disable=line-too-long
 TEST_MNEMONIC = 'grant rice replace explain federal release fix clever romance raise often wild taxi quarter soccer fiber love must tape steak together observe swap guitar'
 TEST_PK = 'f0a7b67eb9a719d54f8a9bfbfb187d8c296b97911a05bf5ca30494823e46beb6'
 TEST_KNOWN_MODEL = 'llama3.1:70b'
-TEST_KNOWN_URL = 'https://ai1.myclaive.com:21434'
+TEST_KNOWN_URL = 'https://72.10.166.66:21434'
 
 class TestSecretFunctions(unittest.TestCase):
     """
@@ -21,7 +21,7 @@ class TestSecretFunctions(unittest.TestCase):
         Test: priv_key_from_mnemonic - check if private key can be successfully
             generated from the provided mnemonic
         """
-        secret_client = SecretWorker()
+        secret_client = Secret()
         pk_hex = secret_client.get_priv_key_from_mnemonic(mnemonic=TEST_MNEMONIC)
         self.assertEqual(pk_hex, TEST_PK)
 
@@ -30,7 +30,7 @@ class TestSecretFunctions(unittest.TestCase):
         Test: get_models - check if we can successfully obtain a list of known
             confidential LLM models
         """
-        secret_client = SecretWorker()
+        secret_client = Secret()
         models = secret_client.get_models()
         self.assertGreaterEqual(len(models), 1)
         self.assertTrue(TEST_KNOWN_MODEL in models)
@@ -40,7 +40,7 @@ class TestSecretFunctions(unittest.TestCase):
         Test: get_urls - check if we can successfully obtain a list of known
             confidential LLM urls
         """
-        secret_client = SecretWorker()
+        secret_client = Secret()
         pk_hex = secret_client.get_priv_key_from_mnemonic(mnemonic=TEST_MNEMONIC)
         urls = secret_client.get_urls(pk_hex)
         self.assertGreaterEqual(len(urls), 1)
@@ -51,7 +51,7 @@ class TestSecretFunctions(unittest.TestCase):
         Test: get_urls_for_model - check if we can successfully obtain a list of known
             confidential LLM urls based on the given model
         """
-        secret_client = SecretWorker()
+        secret_client = Secret()
         urls = secret_client.get_urls(model=TEST_KNOWN_MODEL)
         self.assertGreaterEqual(len(urls), 1)
         self.assertTrue(TEST_KNOWN_URL in urls)

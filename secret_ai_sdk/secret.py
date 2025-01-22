@@ -13,9 +13,9 @@ import secp256k1
 import secret_ai_sdk._config as cfg
 from secret_ai_sdk.secret_ai_ex import SecretAISecretValueMissingError
 
-class SecretWorker:
+class Secret:
     """
-    SecretWorker supports interactions with the worker management smart contract
+    Secret supports interactions with the worker management smart contract
     """
     def __init__(self, chain_id: Optional[str] = None, node_url: Optional[str] = None):
         if not chain_id:
