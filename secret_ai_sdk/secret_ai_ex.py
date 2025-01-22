@@ -10,6 +10,12 @@ class SecretAIError(Exception):
     def __init__(self, msg: str = 'Secret AI SDK error'):
         super().__init__(f'Secret AI SDK Error: {msg}')
 
+class SecretAINotImplementedError(SecretAIError):
+    """Raised when an unimplemented API is called."""
+    def __init__(self):
+        super().__init__('Not implemented')
+
+
 class SecretAIInvalidInputError(SecretAIError):
     """Raised when invalid input is provided."""
     def __init__(self):
