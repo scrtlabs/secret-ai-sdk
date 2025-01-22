@@ -1,10 +1,10 @@
-# secret_ai.py
+# claive.py
 
 """
-Module Secret AI SDK
+Module Claive AI SDK
 ================
 
-Secret AI SDK module serves the purpose of connecting to Secret AI Confidential LLM.
+Claive AI SDK module serves the purpose of connecting to Claive AI Confidential LLM.
 
 Author: Alex H
 Email: alexh@scrtlabs.com
@@ -21,8 +21,8 @@ from pydantic import model_validator
 from langchain_ollama.chat_models import ChatOllama
 
 # local imports
-from secret_ai_sdk._client import SecretAIClient, SecretAIAsyncClient
-import secret_ai_sdk._config as _config
+from claive_sdk._client import ClaiveClient, ClaiveAsyncClient
+import claive_sdk._config as _config
 
 # Get the log level from the environment variable
 log_level_name = os.environ.get(_config.LOG_LEVEL, 'info').lower()
@@ -39,9 +39,9 @@ logger = logging.getLogger(__name__)
 
 logger.fatal = logger.critical  # Add a fatal method to the logger
 
-class ChatSecretAI(ChatOllama):
+class ChatClaive(ChatOllama):
     """
-    Secret AI Chat client
+    Claive AI Chat client
     """
     @model_validator(mode="after")
     def _set_clients(self) -> Self:
@@ -49,10 +49,10 @@ class ChatSecretAI(ChatOllama):
         # Call the parent class method
         super()._set_clients()
         client_kwargs = self.client_kwargs or {}
-        # Secret AI Client
-        self._client = SecretAIClient(host=self.base_url, **client_kwargs)
-        # Secret AI Async Client
-        self._async_client = SecretAIAsyncClient(host=self.base_url, **client_kwargs)
+        # Claive AI Client
+        self._client = ClaiveClient(host=self.base_url, **client_kwargs)
+        # Claive AI Async Client
+        self._async_client = ClaiveAsyncClient(host=self.base_url, **client_kwargs)
 
         return self
 
