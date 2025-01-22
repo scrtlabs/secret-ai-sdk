@@ -28,21 +28,15 @@ Here's an example of how to use the Secret AI SDK:
 from secret_ai_sdk.secret_ai import ChatSecret
 from secret_ai_sdk.secret import Secret
 
-EXAMPLE_MNEMONIC = 'your list of mnemonic words....'
-
 secret_client = Secret()
-# You need to provide your private key to sign the messages sent to the smart contract
-pk_hex = secret_client.get_priv_key_from_mnemonic(mnemonic=EXAMPLE_MNEMONIC)
-# You may need to know what confidential models are currently registered with Secret
-models = secret_client.get_models(pk_hex)
-# You may provide your own logic to select a specific confidential model
-model = your_logic_to_pick_model(models)
+# Get all the models registered with the smart contracts
+models = secret_client.get_models()
 # For the chosen model you may obtain a list of LLM instance URLs to connect to
-urls = secret_client.get_urls(pk_hex, model=model)
+urls = secret_client.get_urls(model=models[0])
 # You previosly exported the env var SECRET_AI_API_KEY=YOUR-API-KEY
 secret_ai_llm = ChatSecret(
 base_url=urls[0], # in this case we choose to access the first url in the list
-model=model, # your previosly selected model
+model=models[0], # your previosly selected model
 temperature=1.
 )
 # Define your messages you want to send to the confidential LLM for processing
