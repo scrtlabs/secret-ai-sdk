@@ -14,7 +14,7 @@ All, but secret-sdk-python, are listed in pyproject.toml file
 
 You will need to install secret-sdk-python as shown below:
 ```bash
-pip install git+https://github.com/scrtlabs/secret-sdk-python.git@main
+pip install 'secret-sdk>=1.8.1'
 ```
 
 ## Installation
