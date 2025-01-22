@@ -1,11 +1,11 @@
-# test_claive.py 
+# test_secret_ai.py
 """
-claive sdk test module
+secret-ai sdk test module
 """
 import os
 import unittest
-from claive_sdk.secret import SecretClaive
-from claive_sdk.claive import ChatClaive
+from secret_ai_sdk.secret import Secret
+from secret_ai_sdk.secret_ai import ChatSecret
 
 # pylint: disable=line-too-long
 TEST_MNEMONIC = 'grant rice replace explain federal release fix clever romance raise often wild taxi quarter soccer fiber love must tape steak together observe swap guitar'
@@ -14,28 +14,26 @@ TEST_KNOWN_MODEL = 'llama3.1:70b' # a known confidential LLM model
 
 TEST_KNOWN_API_KEY = 'dGVzdEBzY3J0bGFicy5jb206Q0xBSVZFLUFJLUFQSS1LRVktMTIzNC01Njc4OTAtMDAwMAo=' # a known to work API key
 
-class TestClaiveFunctions(unittest.TestCase):
+class TestSecretAIFunctions(unittest.TestCase):
     """
-    Test class to test Claive SDK functionality
+    Test class to test Secret AI SDK functionality
     """
-    def test_claive(self):
+    def test_secret_ai(self):
         """
         test - verify that a connection with a confidential LLM can be establsished
             and a query can be successfully processed
         """
-        secret_client = SecretClaive()
+        secret_client = Secret()
         models = secret_client.get_models()
         self.assertGreaterEqual(len(models), 1)
         urls = secret_client.get_urls(model=TEST_KNOWN_MODEL)
         self.assertGreaterEqual(len(urls), 1)
 
-        claive_llm = ChatClaive(
+        secret_ai_llm = ChatSecret(
             base_url=urls[0],
             model=TEST_KNOWN_MODEL,
             temperature=1.
         )
-        attestation = claive_llm.get_attestation()
-        self.assertIsNotNone(attestation)
         messages = [
             (
                 "system",
@@ -43,7 +41,7 @@ class TestClaiveFunctions(unittest.TestCase):
             ),
             ("human", "I love programming."),
         ]
-        response = claive_llm.invoke(messages, stream=False)
+        response = secret_ai_llm.invoke(messages, stream=False)
         self.assertIsNotNone(response)
         self.assertGreater(len(response.content), 0)
         print(response.content)

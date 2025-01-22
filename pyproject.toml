@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "claive-sdk"
+name = "secret-ai-sdk"
 version = "0.1.0"
-description = "Claive AI Confidential Computing Python SDK"
+description = "Secret AI Confidential Computing Python SDK"
 authors = ["Alex H <alexh@scrtlabs.com>"]
 license = "MIT"
 readme = "README.md"
