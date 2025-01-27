@@ -3,12 +3,12 @@
 """
 Module: secret enables interactions with Secret worker management smart contract
 """
+import binascii
 import os
 from typing import Optional, List
 
 from secret_sdk.client.lcd import LCDClient
 from secret_sdk.key.mnemonic import MnemonicKey
-import secp256k1
 
 import secret_ai_sdk._config as cfg
 from secret_ai_sdk.secret_ai_ex import SecretAISecretValueMissingError
@@ -48,8 +48,8 @@ class Secret:
         - str: base16 encoded priv key  
         """
         mk = MnemonicKey(mnemonic=mnemonic)
-        pk = secp256k1.PrivateKey(mk.private_key)
-        return pk.serialize()
+        hex_key = binascii.hexlify(mk.private_key)
+        return hex_key.decode('utf8')
 
     def get_models(self) -> List[str]:
         """
