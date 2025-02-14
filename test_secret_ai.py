@@ -10,9 +10,9 @@ from secret_ai_sdk.secret_ai import ChatSecret
 # pylint: disable=line-too-long
 TEST_MNEMONIC = 'grant rice replace explain federal release fix clever romance raise often wild taxi quarter soccer fiber love must tape steak together observe swap guitar'
 
-TEST_KNOWN_MODEL = 'llama3.1:70b' # a known confidential LLM model
+TEST_KNOWN_MODEL = 'deepseek-r1:70b' # a known confidential LLM model
 
-TEST_KNOWN_API_KEY = 'dGVzdEBzY3J0bGFicy5jb206Q0xBSVZFLUFJLUFQSS1LRVktMTIzNC01Njc4OTAtMDAwMAo=' # a known to work API key
+TEST_KNOWN_API_KEY = 'bWFzdGVyQHNjcnRsYWJzLmNvbTpTZWNyZXROZXR3b3JrTWFzdGVyS2V5X18yMDI1' # a known to work API key
 
 class TestSecretAIFunctions(unittest.TestCase):
     """

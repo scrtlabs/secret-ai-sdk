@@ -9,7 +9,7 @@ from secret_ai_sdk.secret import Secret
 # pylint: disable=line-too-long
 TEST_MNEMONIC = 'grant rice replace explain federal release fix clever romance raise often wild taxi quarter soccer fiber love must tape steak together observe swap guitar'
 TEST_PK = 'f0a7b67eb9a719d54f8a9bfbfb187d8c296b97911a05bf5ca30494823e46beb6'
-TEST_KNOWN_MODEL = 'llama3.1:70b'
+TEST_KNOWN_MODEL = 'deepseek-r1:70b'
 TEST_KNOWN_URL = 'https://ai1.scrtlabs.com:21434'
 
 class TestSecretFunctions(unittest.TestCase):
