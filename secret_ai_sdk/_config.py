@@ -28,7 +28,7 @@ DEFAULT_LLM_URL='https://ai1.scrtlabs.com:21434' # default LLM URL that Secret A
 # SECRET
 SECRET_CHAIN_ID_DEFAULT = 'pulsar-3'
 SECRET_WORKER_SMART_CONTRACT_DEFAULT = 'secret18cy3cgnmkft3ayma4nr37wgtj4faxfnrnngrlq'
-SECRET_NODE_URL_DEFAULT = 'https://api.pulsar.scrttestnet.com'
+SECRET_NODE_URL_DEFAULT = 'https://pulsar.lcd.secretnodes.com'
 
 SECRET_CHAIN_ID = 'SECRET_CHAIN_ID' # points to the name of the env var for secret chain id
 SECRET_WORKER_SMART_CONTRACT = 'SECRET_WORKER_SMART_CONTRACT' #points to the env var for the smart contract address for secret worker management
