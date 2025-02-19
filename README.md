@@ -57,7 +57,7 @@ If you do not need to select a specific LLM URL (let's say your agent does not n
 ```python
 from secret_ai_sdk.secret_ai import ChatSecret
 
-model = ChatSecret(model='llama3.1:70b')
+model = ChatSecret(model='deepseek-r1:70b')
 
 response = model.invoke([system_message, human_message])
 
