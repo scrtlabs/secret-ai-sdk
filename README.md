@@ -1,5 +1,9 @@
 # Secret AI SDK
 
+[![PyPI version](https://img.shields.io/pypi/v/secret-ai-sdk.svg)](https://pypi.org/project/secret-ai-sdk/)
+[![Python versions](https://img.shields.io/pypi/pyversions/secret-ai-sdk.svg)](https://pypi.org/project/secret-ai-sdk/)
+[![License](https://img.shields.io/github/license/scrtlabs/secret-ai-sdk.svg)](https://opensource.org/licenses/MIT)
+
 The Secret AI SDK provides a simple and convenient way to access Secret Confidential AI models. With this SDK, you can easily integrate Secret's AI capabilities into your own applications and services.
 
 ## Overview
@@ -8,22 +12,24 @@ The Secret AI SDK is a Python library that enables access to Secret Confidential
 
 ## Features
 
-- Access to Secret Confidential AI models
-- Simple and intuitive API
+- Access to Secret Confidential AI models via a clean, Pythonic interface
+- Simple authentication through API keys
+- Support for streaming responses
+- Flexible model selection and configuration
+- Automatic handling of connections to the Secret Network
 
 ## Requirements
 
-`secret-ai-sdk` has a list of dependencies as defined in the `requirements.txt` file. All, except `secret-sdk-python`, are listed in the `pyproject.toml` file.
+`secret-ai-sdk` has dependencies specified in the `pyproject.toml` file, with one external dependency:
 
-You will need to install `secret-sdk-python` as shown below:
-
-```bash
-pip install 'secret-sdk>=1.8.1'
-```
+- You may need to install `secret-sdk` separately:
+  ```bash
+  pip install 'secret-sdk>=1.8.1'
+  ```
 
 ## Installation
 
-To install the Secret AI SDK, you can use pip:
+To install the Secret AI SDK:
 
 ```bash
 pip install secret-ai-sdk
@@ -31,77 +37,81 @@ pip install secret-ai-sdk
 
 ## Usage
 
-Here's an example of how to use the Secret AI SDK:
+### Basic Usage
 
 ```python
 from secret_ai_sdk.secret_ai import ChatSecret
 from secret_ai_sdk.secret import Secret
 
+# Initialize the Secret client
 secret_client = Secret()
-# Get all the models registered with the smart contracts
+
+# Get all models registered with the smart contracts
 models = secret_client.get_models()
-# For the chosen model, you may obtain a list of LLM instance URLs to connect to
+
+# For your chosen model, get a list of LLM instance URLs
 urls = secret_client.get_urls(model=models[0])
-# You previously exported the env var SECRET_AI_API_KEY=YOUR-API-KEY
+
+# Create the AI client with specific parameters
 secret_ai_llm = ChatSecret(
-    base_url=urls[0],  # in this case, we choose to access the first URL in the list
-    model=models[0],  # your previously selected model
+    base_url=urls[0],  # Choose a specific URL
+    model=models[0],    # Your selected model
     temperature=1.0
 )
-# Define your messages to send to the confidential LLM for processing
+
+# Define your messages
 messages = [
-    ("system", "You are a helpful assistant that translates English to French. Translate the user sentence."),
+    ("system", "You are a helpful assistant that translates English to French."),
     ("human", "I love programming."),
 ]
-# Invoke the LLM
+
+# Invoke the LLM (with streaming disabled)
 response = secret_ai_llm.invoke(messages, stream=False)
 print(response.content)
 ```
 
-If you do not need to select a specific LLM URL (let's say your agent does not need to worry about the contextual memory from previous sessions), you can make a simplified call to `ChatSecret`. Given the exported env var `SECRET_AI_API_KEY='YOUR_API_KEY'`:
+### API Key
 
-```python
-from secret_ai_sdk.secret_ai import ChatSecret
+To use the Secret AI SDK, you need your own Secret AI API Key. Visit SecreAI Development portal: [https://aidev.scrtlabs.com/](https://aidev.scrtlabs.com/).
 
-model = ChatSecret(model='llama3.1:70b')
+Set your API key as an environment variable:
 
-response = model.invoke([system_message, human_message])
-
-print(response)
+```bash
+export SECRET_AI_API_KEY='YOUR_API_KEY'
 ```
 
-You can reference `test_secret_ai.py` and `test_secret.py` to see how we tested the code, as it may help you in writing your own implementation.
+### Node URL Configuration
 
-## Manually Setting Up `node_url`
-
-If you experience issues with the default `node_url` (`SECRET_NODE_URL_DEFAULT` config variable), instead of declaring the client like this:
-
-```python
-secret_client = Secret()
-```
-
-you can manually specify a `node_url` when instantiating the `Secret` client:
+If you experience issues with the default node URL, you can manually specify one:
 
 ```python
 from secret_ai_sdk.secret import Secret
 
-secret_client = Secret(chain_id='pulsar-3', node_url=<LCD_NODE_URL>)
+# Option 1: Directly in code
+secret_client = Secret(chain_id='pulsar-3', node_url='YOUR_LCD_NODE_URL')
+
+# Option 2: Using an environment variable
+# export SECRET_NODE_URL='YOUR_LCD_NODE_URL'
 ```
 
-Alternatively, you can set the `node_url` via an environment variable:
+For available endpoints and LCD nodes, see the [Secret Network Documentation](https://docs.scrt.network/secret-network-documentation/development/resources-api-contract-addresses/connecting-to-the-network/testnet-pulsar-3).
 
-```bash
-export SECRET_NODE_URL=<LCD_NODE_URL>
-```
+## Examples
 
-For more details on available endpoints and a list of LCD nodes, refer to the official Secret Network documentation:
-[Connecting to the Network - Testnet Pulsar-3](https://docs.scrt.network/secret-network-documentation/development/resources-api-contract-addresses/connecting-to-the-network/testnet-pulsar-3)
+For streaming implementation examples, refer to the `example.py` file included in the package.
 
 ## API Documentation
 
-For more information on the Secret AI SDK API, please see our [API documentation](https://docs.scrt.network/secret-network-documentation/secret-ai/sdk).
+For comprehensive API documentation, please visit our [official documentation](https://docs.scrt.network/secret-network-documentation/secret-ai/sdk).
 
 ## License
 
 The Secret AI SDK is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+If you encounter any issues or have questions, please [open an issue](https://github.com/scrtlabs/secret-ai-sdk/issues) on our GitHub repository.

@@ -6,6 +6,7 @@ import os
 import unittest
 from secret_ai_sdk.secret import Secret
 from secret_ai_sdk.secret_ai import ChatSecret
+from langchain.callbacks.base import BaseCallbackHandler
 
 # pylint: disable=line-too-long
 TEST_MNEMONIC = 'grant rice replace explain federal release fix clever romance raise often wild taxi quarter soccer fiber love must tape steak together observe swap guitar'
@@ -23,6 +24,7 @@ class TestSecretAIFunctions(unittest.TestCase):
         test - verify that a connection with a confidential LLM can be establsished
             and a query can be successfully processed
         """
+        os.environ['SECRET_AI_API_KEY'] = TEST_KNOWN_API_KEY
         secret_client = Secret()
         models = secret_client.get_models()
         self.assertGreaterEqual(len(models), 1)
@@ -41,7 +43,7 @@ class TestSecretAIFunctions(unittest.TestCase):
             ),
             ("human", "I love programming."),
         ]
-        response = secret_ai_llm.invoke(messages, stream=False)
+        response = secret_ai_llm.invoke(messages)
         self.assertIsNotNone(response)
         self.assertGreater(len(response.content), 0)
         print(response.content)
