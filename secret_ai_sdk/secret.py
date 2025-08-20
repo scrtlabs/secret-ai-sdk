@@ -57,10 +57,31 @@ class Secret:
                 
         Returns:
         - List[str] - a list of models known to the smart contract
+        
+        Raises:
+        - SecretAINetworkError: If the query fails after retries
+        - SecretAIResponseError: If the response is malformed
         """
-        query = {"get_models": {}}
-        models = self.secret_client.wasm.contract_query(self.smart_contract, query)
-        return models['models']
+        from secret_ai_sdk.secret_ai_ex import SecretAINetworkError, SecretAIResponseError
+        from secret_ai_sdk._retry import retry_with_backoff
+        
+        @retry_with_backoff(max_retries=3)
+        def _query_models():
+            query = {"get_models": {}}
+            try:
+                response = self.secret_client.wasm.contract_query(self.smart_contract, query)
+                if not isinstance(response, dict) or 'models' not in response:
+                    raise SecretAIResponseError(
+                        "Invalid response format from smart contract",
+                        response
+                    )
+                return response['models']
+            except Exception as e:
+                if isinstance(e, SecretAIResponseError):
+                    raise
+                raise SecretAINetworkError(f"Failed to query models: {str(e)}", e)
+        
+        return _query_models()
 
 
     def get_urls(self, model: Optional[str] = None) -> List[str]:
@@ -74,10 +95,32 @@ class Secret:
         Returns:
         - List[str]: - a list of urls that match the model search criteria, if provided,
                     or all urls known to Secret smart contract
+        
+        Raises:
+        - SecretAINetworkError: If the query fails after retries
+        - SecretAIResponseError: If the response is malformed
         """
-        if not model:
-            query = {"get_u_r_ls": {}}
-        else:
-            query = {"get_u_r_ls": {"model": model}}
-        urls = self.secret_client.wasm.contract_query(self.smart_contract, query)
-        return urls['urls']
+        from secret_ai_sdk.secret_ai_ex import SecretAINetworkError, SecretAIResponseError
+        from secret_ai_sdk._retry import retry_with_backoff
+        
+        @retry_with_backoff(max_retries=3)
+        def _query_urls():
+            if not model:
+                query = {"get_u_r_ls": {}}
+            else:
+                query = {"get_u_r_ls": {"model": model}}
+            
+            try:
+                response = self.secret_client.wasm.contract_query(self.smart_contract, query)
+                if not isinstance(response, dict) or 'urls' not in response:
+                    raise SecretAIResponseError(
+                        "Invalid response format from smart contract",
+                        response
+                    )
+                return response['urls']
+            except Exception as e:
+                if isinstance(e, SecretAIResponseError):
+                    raise
+                raise SecretAINetworkError(f"Failed to query URLs: {str(e)}", e)
+        
+        return _query_urls()

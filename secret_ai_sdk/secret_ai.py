@@ -21,7 +21,7 @@ from pydantic import model_validator
 from langchain_ollama.chat_models import ChatOllama
 
 # local imports
-from secret_ai_sdk._client import SecretAIClient, SecretAIAsyncClient
+from secret_ai_sdk._enhanced_client import EnhancedSecretAIClient, EnhancedSecretAIAsyncClient
 import secret_ai_sdk._config as _config
 
 # Get the log level from the environment variable
@@ -50,9 +50,9 @@ class ChatSecret(ChatOllama):
         super()._set_clients()
         client_kwargs = self.client_kwargs or {}
         # Secret AI Client
-        self._client = SecretAIClient(host=self.base_url, **client_kwargs)
+        self._client = EnhancedSecretAIClient(host=self.base_url, **client_kwargs)
         # Secret AI Async Client
-        self._async_client = SecretAIAsyncClient(host=self.base_url, **client_kwargs)
+        self._async_client = EnhancedSecretAIAsyncClient(host=self.base_url, **client_kwargs)
 
         return self
 
