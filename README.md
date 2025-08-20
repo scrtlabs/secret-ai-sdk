@@ -254,7 +254,7 @@ client = EnhancedSecretAIClient(
 
 ## Examples
 
-For comprehensive examples including streaming implementation, refer to the `example.py` file included in the package.
+For comprehensive examples including streaming implementation, refer to the `example.py` and `voice_example.py` files provided in the package.
 
 ## API Documentation
 
