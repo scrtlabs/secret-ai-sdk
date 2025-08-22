@@ -11,27 +11,40 @@ from pathlib import Path
 # Add the SDK to path
 sys.path.insert(0, str(Path(__file__).parent))
 
+from secret_ai_sdk.secret import Secret
 from secret_ai_sdk.voice_secret import VoiceSecret
 
 # Service configuration from environment variables
-VOICE_HOST = os.getenv('SECRET_AI_VOICE_HOST', 'localhost')
-STT_PORT = int(os.getenv('SECRET_AI_STT_PORT', '25436'))
-TTS_PORT = int(os.getenv('SECRET_AI_TTS_PORT', '25435'))
+API_KEY = os.getenv('SECRET_AI_API_KEY')
+if API_KEY is None:
+    print('SECRET_AI_API_KEY must be set')
+    sys.exit(1)
 
 def test_stt_service():
     """Test STT service functionality independently"""
     print("🎧 Testing STT Service")
     
     try:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt-whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts-kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt-whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts-kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
         # Initialize with custom ports
         voice_client = VoiceSecret(
-            stt_host=VOICE_HOST,
-            stt_port=STT_PORT,
-            tts_host=VOICE_HOST,
-            tts_port=TTS_PORT
+            stt_url=stt_url,
+            tts_url=tts_url
         )
-        print(f"✅ VoiceSecret initialized (STT: {VOICE_HOST}:{STT_PORT})")
-        
+        print(f"✅ VoiceSecret initialized (STT: {stt_url}")
         stt_available = False
         
         # Test STT health check
@@ -50,20 +63,35 @@ def test_stt_service():
     except Exception as e:
         print(f"❌ STT service test failed: {e}")
         return False
+    except ValueError as e:
+        print(f"❌ STT service test failed: {e}")
+        return False
 
 def test_tts_service():
     """Test TTS service functionality independently"""
     print("🎤 Testing TTS Service")
     
     try:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt-whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts-kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt-whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts-kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
         # Initialize with custom ports
         voice_client = VoiceSecret(
-            stt_host=VOICE_HOST,
-            stt_port=STT_PORT,
-            tts_host=VOICE_HOST,
-            tts_port=TTS_PORT
+            stt_url=stt_url,
+            tts_url=tts_url
         )
-        print(f"✅ VoiceSecret initialized (TTS: {VOICE_HOST}:{TTS_PORT})")
+        print(f"✅ VoiceSecret initialized (TTS: {tts_url})")
         
         tts_available = False
         
@@ -102,17 +130,32 @@ def test_tts_service():
     except Exception as e:
         print(f"❌ TTS service test failed: {e}")
         return False
+    except ValueError as e:
+        print(f"❌ STT transcription test failed: {e}")
+        return False
 
 def test_tts_synthesis():
     """Test text-to-speech synthesis (requires TTS service)"""
     print("\n🔊 Testing TTS Synthesis")
     
     try:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt-whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts-kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt-whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts-kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
         voice_client = VoiceSecret(
-            stt_host=VOICE_HOST,
-            stt_port=STT_PORT,
-            tts_host=VOICE_HOST,
-            tts_port=TTS_PORT
+            stt_url=stt_url,
+            tts_url=tts_url
         )
         
         # First check if TTS service is available
@@ -167,6 +210,9 @@ def test_tts_synthesis():
     except Exception as e:
         print(f"❌ TTS synthesis test failed: {e}")
         return False
+    except ValueError as e:
+        print(f"❌ STT transcription test failed: {e}")
+        return False
 
 
 def test_stt_transcription():
@@ -174,11 +220,23 @@ def test_stt_transcription():
     print("\n🎵 Testing STT Transcription")
     
     try:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt-whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts-kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt-whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts-kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
         voice_client = VoiceSecret(
-            stt_host=VOICE_HOST,
-            stt_port=STT_PORT,
-            tts_host=VOICE_HOST,
-            tts_port=TTS_PORT
+            stt_url=stt_url,
+            tts_url=tts_url
         )
         
         # First check if STT service is available
@@ -240,12 +298,14 @@ def test_stt_transcription():
     except Exception as e:
         print(f"❌ STT transcription test failed: {e}")
         return False
+    except ValueError as e:
+        print(f"❌ STT transcription test failed: {e}")
+        return False
 
 
 async def main():
     """Run all tests with separated STT and TTS functionality"""
     print("🚀 Starting VoiceSecret Tests")
-    print(f"📍 Configuration: Host={VOICE_HOST}, STT Port={STT_PORT}, TTS Port={TTS_PORT}")
     print("=" * 70)
     
     # Create output directory
@@ -257,8 +317,8 @@ async def main():
     tts_available = test_tts_service()
     
     print(f"\n📊 Service Status:")
-    print(f"  STT Service ({VOICE_HOST}:{STT_PORT}): {'✅ Available' if stt_available else '❌ Not Available'}")
-    print(f"  TTS Service ({VOICE_HOST}:{TTS_PORT}): {'✅ Available' if tts_available else '❌ Not Available'}")
+    print(f"  STT Service : {'✅ Available' if stt_available else '❌ Not Available'}")
+    print(f"  TTS Service : {'✅ Available' if tts_available else '❌ Not Available'}")
     
     if not stt_available and not tts_available:
         print("\n❌ No services available for testing")

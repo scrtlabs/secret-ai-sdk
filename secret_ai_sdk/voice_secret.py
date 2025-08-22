@@ -25,10 +25,8 @@ class VoiceSecret:
     """
     
     def __init__(self, 
-                 stt_host: str = "localhost", 
-                 stt_port: int = 25436,
-                 tts_host: str = "localhost", 
-                 tts_port: int = 25435,
+                 stt_url: str = "https://localhost:25436", 
+                 tts_url: str = "https://localhost:25435", 
                  api_key: Optional[str] = None):
         """
         Initialize VoiceSecret client.
@@ -49,14 +47,10 @@ class VoiceSecret:
         self.api_key = api_key
         
         # STT configuration
-        self.stt_host = stt_host
-        self.stt_port = stt_port
-        self.stt_http_url = f"https://{stt_host}:{stt_port}"
+        self.stt_http_url = stt_url
         
         # TTS configuration
-        self.tts_host = tts_host
-        self.tts_port = tts_port
-        self.tts_base_url = f"https://{tts_host}:{tts_port}"
+        self.tts_base_url = tts_url
         
         # Setup HTTP session for TTS
         self.session = requests.Session()

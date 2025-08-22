@@ -85,13 +85,30 @@ print(response.content)
 
 ```python
 from secret_ai_sdk.voice_secret import VoiceSecret
+from secret_ai_sdk.secret import Secret
 
-# Initialize VoiceSecret client
+# First, query smart contract to get available models and service URLs
+secret_client = Secret()
+models = secret_client.get_models()
+
+# Check if required models are available
+if 'stt-whisper' not in models:
+    raise ValueError("STT Whisper model not available")
+if 'tts-kokoro' not in models:
+    raise ValueError("TTS Kokoro model not available")
+
+# Get service URLs from smart contract for each model
+stt_url = secret_client.get_urls(model='stt-whisper')
+if stt_url is None:
+    raise ValueError("STT url not available")
+tts_url = secret_client.get_urls(model='tts-kokoro')
+if tts_url is None:
+    raise ValueError("TTS url not available")
+
+# Initialize VoiceSecret client with smart contract URLs
 voice_client = VoiceSecret(
-    stt_host="your-stt-host.com",
-    stt_port=25436,
-    tts_host="your-tts-host.com", 
-    tts_port=25435,
+    stt_url=stt_url,
+    tts_url=tts_url,
     api_key="your_api_key"  # Optional, reads from SECRET_AI_API_KEY env var
 )
 
@@ -186,7 +203,7 @@ If you experience issues with the default node URL, you can manually specify one
 from secret_ai_sdk.secret import Secret
 
 # Option 1: Directly in code
-secret_client = Secret(chain_id='pulsar-3', node_url='YOUR_LCD_NODE_URL')
+secret_client = Secret(chain_id='secret-4', node_url='YOUR_LCD_NODE_URL')
 
 # Option 2: Using an environment variable
 # export SECRET_NODE_URL='YOUR_LCD_NODE_URL'

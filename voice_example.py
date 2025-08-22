@@ -29,6 +29,7 @@ from pathlib import Path
 from typing import Optional
 
 # Import the Secret AI SDK
+from secret_ai_sdk.secret import Secret
 from secret_ai_sdk.voice_secret import VoiceSecret
 from secret_ai_sdk.secret_ai_ex import (
     SecretAIAPIKeyMissingError,
@@ -36,11 +37,6 @@ from secret_ai_sdk.secret_ai_ex import (
     SecretAITimeoutError,
     SecretAIResponseError
 )
-
-# Configuration from environment variables
-VOICE_HOST = os.getenv('SECRET_AI_VOICE_HOST', 'localhost')
-STT_PORT = int(os.getenv('SECRET_AI_STT_PORT', '25436'))
-TTS_PORT = int(os.getenv('SECRET_AI_TTS_PORT', '25435'))
 
 def print_header(title: str):
     """Print a formatted section header"""
@@ -69,21 +65,33 @@ def example_basic_setup():
     print_header("Example 1: Basic Setup and Initialization")
     
     try:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt_whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts_kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt_whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts_kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
         # Initialize VoiceSecret with default configuration
         voice_client = VoiceSecret()
         print_success("VoiceSecret initialized with default settings")
         
         # Initialize with custom configuration
         voice_client_custom = VoiceSecret(
-            stt_host=VOICE_HOST,
-            stt_port=STT_PORT,
-            tts_host=VOICE_HOST,
-            tts_port=TTS_PORT,
+            stt_url=stt_url,
+            tts_url=tts_url,
             api_key=os.getenv('SECRET_AI_API_KEY')
         )
         print_success(f"VoiceSecret initialized with custom settings:")
-        print(f"  - STT Endpoint: {VOICE_HOST}:{STT_PORT}")
-        print(f"  - TTS Endpoint: {VOICE_HOST}:{TTS_PORT}")
+        print(f"  - STT Endpoint: {stt_url}")
+        print(f"  - TTS Endpoint: {tts_url}")
         
         # Clean up
         voice_client.close()
@@ -97,14 +105,30 @@ def example_basic_setup():
     except Exception as e:
         print_error(f"Setup failed: {e}")
         return False
+    except ValueError as e:
+        print_error(f"Invalid configuration: {e}")
+        return False
 
 def example_service_health_checks():
     """Example 2: Service health monitoring and availability checks"""
     print_header("Example 2: Service Health Monitoring")
     
     try:
-        with VoiceSecret(stt_host=VOICE_HOST, stt_port=STT_PORT, 
-                        tts_host=VOICE_HOST, tts_port=TTS_PORT) as voice:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt_whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts_kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt_whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts_kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
+        with VoiceSecret(stt_url=stt_url, tts_url=tts_url) as voice:
             
             print_step("Checking STT service health...")
             try:
@@ -131,8 +155,21 @@ def example_tts_capabilities():
     print_header("Example 3: Text-to-Speech (TTS) Capabilities")
     
     try:
-        with VoiceSecret(stt_host=VOICE_HOST, stt_port=STT_PORT,
-                        tts_host=VOICE_HOST, tts_port=TTS_PORT) as voice:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt_whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts_kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt_whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts_kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
+        with VoiceSecret(stt_url=stt_url, tts_url=tts_url) as voice:
             
             # Check TTS availability first
             try:
@@ -218,8 +255,21 @@ def example_stt_capabilities():
     print_header("Example 4: Speech-to-Text (STT) Capabilities")
     
     try:
-        with VoiceSecret(stt_host=VOICE_HOST, stt_port=STT_PORT,
-                        tts_host=VOICE_HOST, tts_port=TTS_PORT) as voice:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt_whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts_kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt_whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts_kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
+        with VoiceSecret(stt_url=stt_url, tts_url=tts_url) as voice:
             
             # Check STT availability first
             try:
@@ -338,8 +388,21 @@ def example_practical_use_case():
     print_header("Example 6: Practical Use Case - Voice Memo Processing")
     
     try:
-        with VoiceSecret(stt_host=VOICE_HOST, stt_port=STT_PORT,
-                        tts_host=VOICE_HOST, tts_port=TTS_PORT) as voice:
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt_whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts_kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt_whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts_kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
+        with VoiceSecret(stt_url=stt_url, tts_url=tts_url) as voice:
             
             # Check service availability
             stt_available = tts_available = False
@@ -427,52 +490,70 @@ async def main():
     """Run all voice examples"""
     print("🎤 Secret AI SDK - Voice Examples")
     print("==================================")
-    print(f"Configuration:")
-    print(f"  Host: {VOICE_HOST}")
-    print(f"  STT Port: {STT_PORT}")
-    print(f"  TTS Port: {TTS_PORT}")
-    print(f"  API Key: {'✅ Set' if os.getenv('SECRET_AI_API_KEY') else '❌ Missing'}")
-    
-    if not os.getenv('SECRET_AI_API_KEY'):
-        print_error("SECRET_AI_API_KEY environment variable not set")
-        print("Please set your API key: export SECRET_AI_API_KEY=your_key_here")
-        return
-    
-    # Run examples
-    examples = [
-        ("Basic Setup", example_basic_setup),
-        ("Service Health Checks", example_service_health_checks),
-        ("TTS Capabilities", example_tts_capabilities),
-        ("STT Capabilities", example_stt_capabilities),
-        ("Error Handling", example_error_handling),
-        ("Practical Use Case", example_practical_use_case),
-    ]
-    
-    results = []
-    for name, example_func in examples:
-        try:
-            result = example_func()
-            results.append((name, result))
-        except Exception as e:
-            print_error(f"Example '{name}' failed with unexpected error: {e}")
-            results.append((name, False))
-    
-    # Summary
-    print_header("Examples Summary")
-    passed = 0
-    for name, result in results:
-        status = "✅ PASSED" if result else "❌ FAILED"
-        print(f"{name}: {status}")
-        if result:
-            passed += 1
-    
-    print(f"\n🎯 Results: {passed}/{len(results)} examples completed successfully")
-    
-    if passed == len(results):
-        print("🎉 All examples completed successfully!")
-        print("\nCheck the 'voice_examples_output' directory for generated files.")
-    else:
-        print("⚠️  Some examples failed - this may be due to service availability")
+    try:
+        # get services from smart contract
+        secret_client = Secret()
+        models = secret_client.get_models()
+        if 'stt_whisper' not in models:
+            raise ValueError("STT Whisper model not available")
+        if 'tts_kokoro' not in models:
+            raise ValueError("TTS Kokoro model not available")
+        
+        stt_url = secret_client.get_urls(model='stt_whisper')
+        if stt_url is None:
+            raise ValueError("STT url not available")
+        tts_url = secret_client.get_urls(model='tts_kokoro')
+        if tts_url is None:
+            raise ValueError("TTS url not available")
+
+
+        print(f"Configuration:")
+        print(f"  STT Host: {stt_url}")
+        print(f"  TTS Host: {tts_url}")
+        print(f"  API Key: {'✅ Set' if os.getenv('SECRET_AI_API_KEY') else '❌ Missing'}")
+        
+        if not os.getenv('SECRET_AI_API_KEY'):
+            print_error("SECRET_AI_API_KEY environment variable not set")
+            print("Please set your API key: export SECRET_AI_API_KEY=your_key_here")
+            return
+        
+        # Run examples
+        examples = [
+            ("Basic Setup", example_basic_setup),
+            ("Service Health Checks", example_service_health_checks),
+            ("TTS Capabilities", example_tts_capabilities),
+            ("STT Capabilities", example_stt_capabilities),
+            ("Error Handling", example_error_handling),
+            ("Practical Use Case", example_practical_use_case),
+        ]
+        
+        results = []
+        for name, example_func in examples:
+            try:
+                result = example_func()
+                results.append((name, result))
+            except Exception as e:
+                print_error(f"Example '{name}' failed with unexpected error: {e}")
+                results.append((name, False))
+        
+        # Summary
+        print_header("Examples Summary")
+        passed = 0
+        for name, result in results:
+            status = "✅ PASSED" if result else "❌ FAILED"
+            print(f"{name}: {status}")
+            if result:
+                passed += 1
+        
+        print(f"\n🎯 Results: {passed}/{len(results)} examples completed successfully")
+        
+        if passed == len(results):
+            print("🎉 All examples completed successfully!")
+            print("\nCheck the 'voice_examples_output' directory for generated files.")
+        else:
+            print("⚠️  Some examples failed - this may be due to service availability")
+    except ValueError as e:
+        print(f"Failed to process: {str(e)}")
 
 if __name__ == "__main__":
     # Run the examples
