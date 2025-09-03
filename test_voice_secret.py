@@ -60,10 +60,10 @@ def test_stt_service():
         voice_client.close()
         return stt_available
         
-    except Exception as e:
+    except ValueError as e:
         print(f"❌ STT service test failed: {e}")
         return False
-    except ValueError as e:
+    except Exception as e:
         print(f"❌ STT service test failed: {e}")
         return False
 
@@ -127,11 +127,11 @@ def test_tts_service():
         voice_client.close()
         return tts_available
         
-    except Exception as e:
-        print(f"❌ TTS service test failed: {e}")
-        return False
     except ValueError as e:
         print(f"❌ STT transcription test failed: {e}")
+        return False
+    except Exception as e:
+        print(f"❌ TTS service test failed: {e}")
         return False
 
 def test_tts_synthesis():
@@ -207,11 +207,11 @@ def test_tts_synthesis():
         voice_client.close()
         return True
         
-    except Exception as e:
-        print(f"❌ TTS synthesis test failed: {e}")
-        return False
     except ValueError as e:
         print(f"❌ STT transcription test failed: {e}")
+        return False
+    except Exception as e:
+        print(f"❌ TTS synthesis test failed: {e}")
         return False
 
 
@@ -295,10 +295,10 @@ def test_stt_transcription():
         voice_client.close()
         return True
         
-    except Exception as e:
+    except ValueError as e:
         print(f"❌ STT transcription test failed: {e}")
         return False
-    except ValueError as e:
+    except Exception as e:
         print(f"❌ STT transcription test failed: {e}")
         return False
 

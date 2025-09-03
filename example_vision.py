@@ -28,8 +28,8 @@ or distributing this software.
 """
 
 from secret_ai_sdk.secret import Secret
-from secret_ai_sdk.secret_ai import ChatSecret
 from langchain_core.callbacks import BaseCallbackHandler
+import os
 import asyncio
 from ollama import Client, ChatResponse
 
@@ -217,13 +217,13 @@ async def stream_with_custom_processing():
 
     client = Client(
     host=urls[0],
-    headers={'Authorization': 'Bearer bWFzdGVyQHNjcnRsYWJzLmNvbTpTZWNyZXROZXR3b3JrTWFzdGVyS2V5X18yMDI1'}
+    headers={'Authorization': f'Bearer {os.getenv("SECRET_AI_API_KEY")}'}
     )
     cb = SecretStreamingHandler(width=50)
     response = client.chat(model=KNOWN_MODEL, stream=True, messages=[{
             'role': 'user',
             'content': 'What is in this image?',
-            'images': ['bird.jpg']
+            'images': ['examples/bird.jpg']
         }]
     )
     for chunk in response:

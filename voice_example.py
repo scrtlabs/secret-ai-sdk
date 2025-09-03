@@ -102,11 +102,11 @@ def example_basic_setup():
     except SecretAIAPIKeyMissingError:
         print_error("API key missing. Please set SECRET_AI_API_KEY environment variable")
         return False
-    except Exception as e:
-        print_error(f"Setup failed: {e}")
-        return False
     except ValueError as e:
         print_error(f"Invalid configuration: {e}")
+        return False
+    except Exception as e:
+        print_error(f"Setup failed: {e}")
         return False
 
 def example_service_health_checks():
@@ -355,8 +355,8 @@ def example_error_handling():
         # Example 2: Handling connection errors
         try:
             voice_bad_host = VoiceSecret(
-                stt_host="nonexistent-host.example.com",
-                tts_host="nonexistent-host.example.com"
+                stt_url="nonexistent-host.example.com",
+                tts_url="nonexistent-host.example.com"
             )
             # Try to use the client
             voice_bad_host.check_stt_health()
