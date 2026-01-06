@@ -24,7 +24,7 @@ API_KEY = 'SECRET_AI_API_KEY' # api key env var
 # SECRET
 SECRET_CHAIN_ID_DEFAULT = 'secret-4'
 SECRET_WORKER_SMART_CONTRACT_DEFAULT = 'secret1xv90yettghx8uv6ug23knaf5mjqwlsghau6aqa'
-SECRET_NODE_URL_DEFAULT = 'https://lcd.secret.tactus.starshell.net/'
+SECRET_NODE_URL_DEFAULT = 'https://rpc12.scrtlabs.com/'
 
 SECRET_CHAIN_ID = 'SECRET_CHAIN_ID' # points to the name of the env var for secret chain id
 SECRET_WORKER_SMART_CONTRACT = 'SECRET_WORKER_SMART_CONTRACT' #points to the env var for the smart contract address for secret worker management
