@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "secret-ai-sdk"
-version = "0.1.6"
+version = "0.1.7"
 description = "Secret AI Confidential VM SDK - Python interface for Secret Network's confidential AI models"
 authors = [
     {name = "Alex H", email = "alexh@scrtlabs.com"}
